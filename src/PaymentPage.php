@@ -7,7 +7,7 @@ namespace PayOnline;
  */
 class PaymentPage {
 
-    const BASE_URL = "https://secure.payonlinesystem.com/";
+    const BASE_URL = "https://secure.payonlinesystem.com";
 
     protected $language = 'en';
 
@@ -103,6 +103,24 @@ class PaymentPage {
      * @return string
      */
     public function getPaymentUrl() {
+        $data = $this->getParameters();
+        return $this->getBasePaymentUrl()."/?".http_build_query($data);
+    }
+
+    /**
+     * Получение базового URL платежной формы, на который будут передваться параметры
+     * @return string
+     */
+    public function getBasePaymentUrl() {
+        $paymentMethod = empty($this->paymentMethod) ? new PaymentMethod(NULL) : $this->paymentMethod;
+        return self::BASE_URL."/{$this->language}/payment/".$paymentMethod->getPaymentUrlSegment();
+    }
+
+    /**
+     * Получение массива с параметрами для платежной формы
+     * @return array
+     */
+    public function getParameters() {
         $data = [
             'MerchantId' => $this->merchantId,
             'OrderId' => $this->orderId,
@@ -127,8 +145,7 @@ class PaymentPage {
         }
 
         $data['SecurityKey'] = $this->getSignature($data);
-        $paymentMethod = empty($this->paymentMethod) ? new PaymentMethod(NULL) : $this->paymentMethod;
-        return self::BASE_URL."/{$this->language}/payment/".$paymentMethod->getPaymentUrlSegment().http_build_query($data);
+        return $data;
     }
 
     /**
