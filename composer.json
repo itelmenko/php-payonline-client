@@ -1,0 +1,17 @@
+{
+	"name": "itelmenko/php-payonline-client",
+	"type": "library",
+	"description": "Payonline API Client PHP library",
+	"homepage": "https://github.com/itelmenko/php-payonline-client",
+	"license": "MIT",
+	"require": {
+		"php": ">=7.2.0"
+	},
+	"minimum-stability": "dev",
+	"require-dev": {},
+	"autoload": {
+		"psr-4": {
+			"PayOnline\\": "src/"
+		}
+	}
+}
