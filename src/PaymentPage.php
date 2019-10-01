@@ -104,7 +104,7 @@ class PaymentPage {
      */
     public function getPaymentUrl() {
         $data = $this->getParameters();
-        return $this->getBasePaymentUrl()."/?".http_build_query($data);
+        return $this->getBasePaymentUrl()."?".http_build_query($data);
     }
 
     /**
@@ -124,8 +124,8 @@ class PaymentPage {
         $data = [
             'MerchantId' => $this->merchantId,
             'OrderId' => $this->orderId,
-            'Amount' => $this->amount,
-            'Currency' => $this->currency
+            'Amount' => (string) $this->amount,
+            'Currency' => (string) $this->currency
         ];
 
         if(!empty($this->validUntil)) {
@@ -165,7 +165,7 @@ class PaymentPage {
         $string = '';
         foreach ($fields as $fieldName) {
             if(!empty($data[$fieldName])) {
-                $string = "{$fieldName}=".$data[$fieldName].'&';
+                $string .= "{$fieldName}=".$data[$fieldName].'&';
             }
         }
         return md5($string."PrivateSecurityKey={$this->secretKey}");
