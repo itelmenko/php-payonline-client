@@ -31,6 +31,8 @@ class PaymentPage {
 
     protected $failUrl;
 
+    protected $data = [];
+
     public function setLanguage(Language $language) {
         $this->language = $language;
     }
@@ -99,6 +101,15 @@ class PaymentPage {
     }
 
     /**
+     * Установка доп данных
+     * @param string $name Имя
+     * @param string $value Значение
+     */
+    public function setData($name, $value) {
+        $this->data[$name] = $value;
+    }
+
+        /**
      * Получение URL платежной формы
      * @return string
      */
@@ -142,6 +153,10 @@ class PaymentPage {
 
         if(!empty($this->failUrl)) {
             $data['FailUrl'] = $this->failUrl;
+        }
+
+        if(!empty($this->data)) {
+            $data = array_merge($data, $this->data);
         }
 
         $data['SecurityKey'] = $this->getSignature($data);
